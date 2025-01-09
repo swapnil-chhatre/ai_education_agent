@@ -9,12 +9,12 @@
 #     Breakdown the {topic} into a list of subtopics which are logical for the user to learn in sequence. For each subtopic, define the learning objectives with short descriptive dotpoints.
 
 planning_task:
-    description: >
-      Create a learning plan for the {topic} course, by breaking down the {topic} into a list of subtopics which are logical for the user to learn in sequence. 
-      For each subtopic, define the learning objectives to satisfy the subtopic.
-    expected_output: >
-      A course plan with a list of subtopics, each with short descriptive dotpoints of the learning objectives required to complete the subtopic.
-    agent: planner
+  description: >
+    Create a learning plan for the {topic} course, by breaking down the {topic} into a list of subtopics which are logical for the user to learn in sequence. 
+    For each subtopic, define the learning objectives to satisfy the subtopic.
+  expected_output: >
+    A course plan with a list of subtopics, each with short descriptive dotpoints of the learning objectives required to complete the subtopic.
+  agent: planner
 
 
 research_task:
@@ -22,37 +22,37 @@ research_task:
     Conduct a thorough research about each of the subtopics of {topic}, defined by the planner on YouTube, Google and medium.
     Find the best resources to satisfy the learning objectives of each subtopic.
   expected_output: >
-    Each subtopic with a list of URLs to the best resources to satisfy the learning objectives of that subtopic.
+    Each subtopic with a list of 2 YouTube URLs, 3 article URLs and 2 medium post IDs to satisfy the learning objectives of that subtopic.
   agent: researcher
 
 
-  organising_task:
-    description: >
-      Choose the best resources to include in the course material.
-    expected_output: >
-      A curated list of resources suitable for each subtopic.
-    agent: organiser
+organising_task:
+  description: >
+    Choose the best 1x YouTube video, 1x article and 1x medium post for each subtopic to fully cover the learning objectives of that subtopic.
+  expected_output: >
+    A curated list of resources suitable for each subtopic.
+  agent: organiser
 
 
-  checking_task:
-    description: >
-      Review the selected resources to ensure they meet the planner's requirements.
-    expected_output: >
-      A report verifying that all resources satisfy the necessary criteria.
-    agent: checker
+checking_task:
+  description: >
+    Review the selected resources to ensure they meet the planner's requirements.
+  expected_output: >
+    A report verifying that all resources satisfy the necessary criteria.
+  agent: checker
 
 
-  writing_task:
-    description: >
-      Write the course material into a markdown file in the desired format.
-    expected_output: >
-      A well-structured markdown file containing all course material.
-    agent: writer
+writing_task:
+  description: >
+    Write the course material into a markdown file in the desired format.
+  expected_output: >
+    A well-structured markdown file containing all course material.
+  agent: writer
 
 
-  reviewing_task:
-    description: >
-      Review and critique the course material for quality and completeness.
-    expected_output: >
-      A detailed critique highlighting strengths and areas for improvement in the course material.
-    agent: reviewer
+reviewing_task:
+  description: >
+    Review and critique the course material for quality and completeness.
+  expected_output: >
+    A detailed critique highlighting strengths and areas for improvement in the course material.
+  agent: reviewer

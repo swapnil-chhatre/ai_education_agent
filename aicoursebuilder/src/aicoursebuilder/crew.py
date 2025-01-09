@@ -2,6 +2,40 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
 from crewai_tools import YoutubeVideoSearchTool, WebsiteSearchTool, SerperDevTool
+from crewai.tools import BaseTool
+import requests
+import os
+
+
+
+
+class MediumSearchTool(BaseTool):
+    name: str = "MediumSearchTool"
+    description: str = "Searches for the top most relevant Medium articles based on a keyword search query."
+
+    def _run(self, keyword: str) -> str:
+        try:
+            url = "https://medium2.p.rapidapi.com/search"
+            headers = {
+                "x-rapidapi-host": "medium2.p.rapidapi.com",
+                "x-rapidapi-key": os.getenv("RAPID_API_KEY")
+            }
+            params = {"q": keyword}
+            
+            response = requests.get(url, headers=headers, params=params, timeout=10)
+            response.raise_for_status()
+            
+            articles = response.json().get('articles', [])[:2]
+            if not articles:
+                return "No articles found for the given keyword."
+                
+            return "\n".join([f"Title: {article['title']}\nLink: {article['link']}" for article in articles])
+            
+        except requests.exceptions.RequestException as e:
+            return f"Error making request: {str(e)}"
+        except (KeyError, ValueError) as e:
+            return f"Error parsing response: {str(e)}"
+
 
 
 # If you want to run a snippet of code before or after the crew starts, 
@@ -33,6 +67,9 @@ It utilizes the serper.dev API to fetch and display the most relevant search res
 """
 
 
+Medium = MediumSearchTool()
+
+
 
 
 @CrewBase
@@ -54,7 +91,7 @@ class Aicoursebuilder():
 		return Agent(
 			config=self.agents_config['planner'],
 			verbose=True,
-			llm= 'gpt-o1-mini' # Using the o1-mini model for better reasoning 
+			# llm= 'gpt-o1-mini' # Using the o1-mini model for better reasoning 
 		)
 
 	# Agent #2: Researcher - Responsible for researching for the course material
@@ -63,7 +100,7 @@ class Aicoursebuilder():
 		return Agent(
 			config=self.agents_config['researcher'],
 			verbose=True,
-			tools=[YouTube, URLSearch]
+			tools=[YouTube, URLSearch, Medium]
 		)
 
 	# Agent #3: Organiser - Responsible for choosing the best course material 
